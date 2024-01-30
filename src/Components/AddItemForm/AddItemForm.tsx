@@ -4,9 +4,10 @@ import {ControlPoint} from "@material-ui/icons";
 
 type AddItemFormPropsType = {
     addItem: (taskValue: string) => void
+    disabled?: boolean
 }
 
-export function AddItemForm(props: AddItemFormPropsType) {
+export function AddItemForm({disabled = false, addItem}: AddItemFormPropsType) {
     let [taskValue, setTaskValue] = useState<string>('')
     let [error, setError] = useState<string | null>(null)
 
@@ -24,12 +25,13 @@ export function AddItemForm(props: AddItemFormPropsType) {
             setError("Field is required")
             return
         }
-        props.addItem(taskValue.trim())
+        addItem(taskValue.trim())
         setTaskValue('')
     }
 
     return <div>
         <TextField
+            disabled={disabled}
             variant={"standard"}
             label="Type value"
             error={!!error}
@@ -37,7 +39,7 @@ export function AddItemForm(props: AddItemFormPropsType) {
             helperText={error}
             onChange={onChangeInput}
             onKeyPress={onKeyPressHandler}/>
-        <IconButton onClick={addTaskCallBack} color={"secondary"}>
+        <IconButton onClick={addTaskCallBack} color={"secondary"} disabled={disabled}>
             <ControlPoint />
         </IconButton>
     </div>
