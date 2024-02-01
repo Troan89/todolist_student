@@ -9,7 +9,7 @@ test('its should be equals', ()=>{
     const startTasksState: TasksStateType = {}
     const startTodolistsDtate: TodolistDomain_T[] = []
 
-    const action = addTodolistAC({id: v1(), title: "What to learn", addedDate: '', order: 0})
+    const action = addTodolistAC({todolist: {id: v1(), title: "What to learn", addedDate: '', order: 0}})
 
     const endTasksState = tasksReducer(startTasksState, action)
     const endTodolistsState = todolistsReducer(startTodolistsDtate, action)
@@ -18,6 +18,6 @@ test('its should be equals', ()=>{
     const idFromTasks = keys[0]
     const idFromTodolist = endTodolistsState[0].id
 
-    expect(idFromTasks).toBe(action.todolist.id)
-    expect(idFromTodolist).toBe(action.todolist.id )
+    expect(idFromTasks).toBe(action.payload.todolist.id)
+    expect(idFromTodolist).toBe(action.payload.todolist.id )
 })

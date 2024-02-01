@@ -41,7 +41,7 @@ export const TodolistsList: React.FC<TodolistsList_T> = ({demo = false}) => {
     }
 
     function changeFilter(value: FilterValuesType, todolistId: string) {
-        dispatch(ChangeTodolistFilterAC(value, todolistId))
+        dispatch(ChangeTodolistFilterAC({filter: value, id: todolistId}))
     }
 
     function addTodolist(title: string) {

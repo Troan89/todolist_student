@@ -1,14 +1,6 @@
-import axios from 'axios'
 import {ResponseType} from "./todolist-api";
+import {instance} from "./instance";
 
-
-const instance = axios.create({
-    baseURL: "https://social-network.samuraijs.com/api/1.1/",
-    withCredentials: true,
-    headers: {
-        "API-KEY": "3bc7f25e-df39-49d1-baad-913684cbf2df"
-    }
-})
 
 //api
 export const authApi = {

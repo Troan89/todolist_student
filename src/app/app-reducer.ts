@@ -1,58 +1,53 @@
 import {Dispatch} from "redux";
 import {authApi} from "../api/auth-api";
 import {setIsLoggedInAC} from "../features/Login/auth-reducer";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-const initialState: InitialStateType = {
+const initialState: initialState_T = {
     status: 'idle',
     error: null,
     isInitialized: false
 }
-
-
-export const appReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
-    switch (action.type) {
-        case 'APP/SET-STATUS':
-            return {...state, status: action.status}
-        case 'APP/SET-ERROR':
-            return {...state, error: action.error}
-        case "APP/SET-INITIALIZED":
-            return {...state, isInitialized: action.initialized}
-        default:
-            return state
-    }
-}
-
-export type AppSetError_T = ReturnType<typeof appSetErrorAC>;
-export type AppSetStatus_T = ReturnType<typeof appSetStatusAC>;
-export type SetInitialized_T = ReturnType<typeof setInitializedAC>;
-type ActionsType =
-    | AppSetError_T
-    | AppSetStatus_T
-    | SetInitialized_T
-    | ReturnType<typeof setIsLoggedInAC>
-export type InitialStateType = {
-    status: Status_T,
-    error: string | null,
+type initialState_T = {
+    status: Status_T
+    error: string | null
     isInitialized: boolean
 }
-export type Status_T = 'idle' | 'loading' | 'succeeded' | 'failed'
-type ThunkDispatch = Dispatch<ActionsType | AppSetStatus_T | AppSetError_T>
 
-//action
-export const appSetErrorAC = (error: string | null) => ({type: 'APP/SET-ERROR', error} as const)
-export const appSetStatusAC = (status: Status_T) => ({type: 'APP/SET-STATUS', status} as const)
-export const setInitializedAC = (initialized: boolean) => ({type: 'APP/SET-INITIALIZED', initialized} as const)
+const slice = createSlice({
+    name: "app",
+    initialState: initialState,
+    reducers: {
+        appSetErrorAC(state, action: PayloadAction<{ error: string | null }>) {
+            state.error = action.payload.error
+        },
+        appSetStatusAC(state, action: PayloadAction<{ status: Status_T }>) {
+            state.status = action.payload.status
+        },
+        setInitializedAC(state, action: PayloadAction<{ initialized: boolean }>) {
+            state.isInitialized = action.payload.initialized
+        }
+    }
+})
+
+export const appReducer = slice.reducer
+
+export const {appSetErrorAC, appSetStatusAC, setInitializedAC} = slice.actions
+
+export type Status_T = 'idle' | 'loading' | 'succeeded' | 'failed'
 
 //thunk
-export const meTC = () => (dispatch: ThunkDispatch) => {
+export const meTC = () => (dispatch: Dispatch) => {
     authApi.me()
         .then(res => {
             if (res.data.resultCode === 0) {
-
-                dispatch(setIsLoggedInAC(true))
+                dispatch(setIsLoggedInAC({isLoggedIn: true}))
             }
         })
-        .finally(()=>{
-            dispatch(setInitializedAC(true))
+        .finally(() => {
+            dispatch(setInitializedAC({initialized: true}))
         })
 }
+
+export type AppSetError_T = ReturnType<typeof appSetErrorAC>
+export type AppSetStatus_T = ReturnType<typeof appSetStatusAC>

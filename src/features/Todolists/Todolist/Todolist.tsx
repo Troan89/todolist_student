@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppRootState, useAppDispatch} from "../../../app/store";
 import {addTaskTC, fetchTasksTC, removeTasksTC, updateTaskTC} from "../tasks-reducer";
 import {Task_T, TaskStatuses} from "../../../api/task-api";
-import {FilterValuesType, TodolistDomain_T} from "../todolists-reducer";
+import {addTodolistAC, FilterValuesType, TodolistDomain_T} from "../todolists-reducer";
 
 
 type PropsType = {
@@ -28,7 +28,6 @@ export const Todolist: React.FC<PropsType> = ({demo = false, ...props}) => {
     //     }
     //     dispatch(fetchTasksTC(props.todolist.id))
     // }, [])
-
     let tasksForTodolist = tasks
     if (props.todolist.filter === 'completed') {
         tasksForTodolist = tasksForTodolist.filter((t => t.status === TaskStatuses.New))

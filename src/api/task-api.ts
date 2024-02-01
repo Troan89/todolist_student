@@ -1,13 +1,4 @@
-import axios from 'axios'
-
-
-const instance = axios.create({
-    baseURL: "https://social-network.samuraijs.com/api/1.1/",
-    withCredentials: true,
-    headers: {
-        "API-KEY": "3bc7f25e-df39-49d1-baad-913684cbf2df"
-    }
-})
+import {instance} from "./instance";
 
 //api
 export const tasksApi = {
@@ -45,8 +36,8 @@ export type Task_T = {
     completed: boolean
     status: TaskStatuses
     priority: TaskPriorities
-    startDate: string
-    deadline: string
+    startDate: string | null
+    deadline: string | null
     id: string
     todoListId: string
     order: number
